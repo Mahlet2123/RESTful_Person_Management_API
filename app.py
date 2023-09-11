@@ -9,8 +9,7 @@ import os
 
 app = Flask(__name__)
 # configure the SQLAlchemy database URI
-# using enviromental variables
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('SQLALCHEMY_DATABASE_URI')
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 
 db = SQLAlchemy(app)
 
@@ -26,6 +25,10 @@ class Person(db.Model):
         """ constructor """
         self.name = name
         self.age = age
+
+
+with app.app_context():
+    db.create_all()
 
 
 # CREATE a new person
@@ -68,3 +71,7 @@ def delete_person(id):
         db.session.commit()
         return jsonify({"message": "Person deleted successfully"}), 200
     return jsonify({"message": "Person not found"}), 404
+
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port="5000")
