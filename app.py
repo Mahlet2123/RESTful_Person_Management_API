@@ -17,7 +17,7 @@ class Person(db.Model):
     """
     This class will define the structure of the database table.
     """
-    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(60), nullable=False)
     age = db.Column(db.Integer, nullable=False)
 
@@ -31,9 +31,9 @@ with app.app_context():
     db.create_all()
 
 
-# CREATE a new person
-@app.route('/api/person', methods=['POST'])
+@app.route('/api', methods=['POST'], strict_slashes=False)
 def create_person():
+    """ CREATE a new person """
     data = request.get_json()
     name = data['name']
     age = data['age']
@@ -42,18 +42,20 @@ def create_person():
     db.session.commit()
     return jsonify({"message": "Person created successfully"}), 201
 
-# READ details of a person
-@app.route('/api/person/<int:id>', methods=['GET'])
-def get_person(id):
-    person = Person.query.get(id)
+
+@app.route('/api/<int:user_id>', methods=['GET'], strict_slashes=False)
+def get_person(user_id):
+    """ READ details of a person """
+    person = Person.query.get(user_id)
     if person:
         return jsonify({"name": person.name, "age": person.age}), 200
     return jsonify({"message": "Person not found"}), 404
 
-# UPDATE details of an existing person
-@app.route('/api/person/<int:id>', methods=['PUT'])
-def update_person(id):
-    person = Person.query.get(id)
+
+@app.route('/api/<int:user_id>', methods=['PUT'], strict_slashes=False)
+def update_person(user_id):
+    """ UPDATE details of an existing person """
+    person = Person.query.get(user_id)
     if person:
         data = request.get_json()
         person.name = data['name']
@@ -63,9 +65,10 @@ def update_person(id):
     return jsonify({"message": "Person not found"}), 404
 
 # DELETE a person
-@app.route('/api/person/<int:id>', methods=['DELETE'])
-def delete_person(id):
-    person = Person.query.get(id)
+@app.route('/api/<int:user_id>', methods=['DELETE'], strict_slashes=False)
+def delete_person(user_id):
+    """ DELETE a person """
+    person = Person.query.get(user_id)
     if person:
         db.session.delete(person)
         db.session.commit()
