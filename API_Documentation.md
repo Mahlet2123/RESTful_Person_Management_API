@@ -36,6 +36,14 @@ Example Response
       "message": "Person created successfully"
     }
 
+Or
+
+    {
+        "message": "Person with this name already exists"
+    }
+
+if the name already exist in the database.
+
 ### 2. Get Person Details
 Endpoint: GET /api/<int:user_id>
 

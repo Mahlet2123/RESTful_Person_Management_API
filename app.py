@@ -19,7 +19,7 @@ class Person(db.Model):
     """
 
     user_id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(60), nullable=False)
+    name = db.Column(db.String(60), nullable=False, unique=True)
     age = db.Column(db.Integer, nullable=False)
 
     def __init__(self, name, age):
@@ -38,6 +38,12 @@ def create_person():
     data = request.get_json()
     name = data["name"]
     age = data["age"]
+    # Check if a person with the same name already exists
+    existing_person = Person.query.filter_by(name=name).first()
+
+    if existing_person:
+        return jsonify({"message": "Person with this name already exists"}), 400
+
     person = Person(name=name, age=age)
     db.session.add(person)
     db.session.commit()
@@ -48,6 +54,12 @@ def create_person():
 def get_person(user_id):
     """READ details of a person"""
     person = Person.query.get(user_id)
+
+    name_param = request.args.get("name")
+    if name_param is not None:
+        # Check if a person with the provided name exists
+        person = Person.query.filter_by(name=name_param).first()
+
     if person:
         return jsonify({"name": person.name, "age": person.age}), 200
     return jsonify({"message": "Person not found"}), 404
