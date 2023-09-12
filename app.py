@@ -2,7 +2,6 @@
 """ The app module """
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
-import os
 
 
 # set up the Flask app and SQLAlchemy
