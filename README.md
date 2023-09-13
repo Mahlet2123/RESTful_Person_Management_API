@@ -35,9 +35,7 @@ To run the API, use the following command:
 
 Here is the Class Diagram (UML) represents the structure of the Flask application and the Person model, including their attributes and relationships.
 
-![Class Diagram (UML)](./class%20diagram.png)
 <img src="./class%20diagram.png" alt="Class Diagram (UML)" width="275" height="450">
-
 
 ## API Endpoints
 
